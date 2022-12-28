@@ -191,16 +191,16 @@ customElements.define('images-canvas',
     }
 
     convolve(data, kernel) {
-      const k = kernel.length;
-      const k2 = Math.floor(k / 2);
+      const kernelSize = kernel.length;
+      const kernelRadius = Math.floor(kernelSize / 2);
       const result = new Array(data.length);
       for (let i = 0; i < data.length; i += 4) { // pixel
         let r = 0;
         let g = 0;
         let b = 0;
-        for (let j = 0; j < k; ++j) { // row
-          for (let l = 0; l < k; ++l) { // column
-            const x = i + 4 * (j - k2) + 4 * this.canvas.width * (l - k2);
+        for (let j = 0; j < kernelSize; ++j) { // row
+          for (let l = 0; l < kernelSize; ++l) { // column
+            const x = i + 4 * (j - kernelRadius) + 4 * this.canvas.width * (l - kernelRadius);
             if (x >= 0 && x < data.length) {
               r += data[x] * kernel[j][l];
               g += data[x + 1] * kernel[j][l];
@@ -208,10 +208,9 @@ customElements.define('images-canvas',
             }
           }
         }
-        const max = Math.max(Math.abs(r), Math.abs(g), Math.abs(b));
-        result[i] = max;
-        result[i + 1] = max;
-        result[i + 2] = max;
+        result[i] = r;
+        result[i + 1] = g;
+        result[i + 2] = b;
         result[i + 3] = 255;
       }
       return result;
