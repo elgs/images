@@ -11,6 +11,9 @@ customElements.define('images-canvas',
     isDrawing = false;
     source = false;
 
+    brightness = 0;
+    contrast = 1;
+
     // derived from LWElement
     domReady() {
       this.canvas = this.shadowRoot.querySelector('#original');
@@ -161,6 +164,47 @@ customElements.define('images-canvas',
         bytes[i] = gray; // red
         bytes[i + 1] = gray; // green
         bytes[i + 2] = gray; // blue
+        bytes[i + 3] = 255; // alpha
+      }
+      leanweb.eventBus.dispatchEvent('image', { bytes, width: this.canvas.width, height: this.canvas.height });
+    }
+
+    invert() {
+      const ctx = this.canvas.getContext('2d');
+      const imageData = ctx.getImageData(0, 0, this.canvas.width, this.canvas.height);
+      const bytes = new Array(imageData.data.length);
+      for (let i = 0; i < imageData.data.length; i += 4) {
+        bytes[i] = 255 - imageData.data[i]; // red
+        bytes[i + 1] = 255 - imageData.data[i + 1]; // green
+        bytes[i + 2] = 255 - imageData.data[i + 2]; // blue
+        bytes[i + 3] = 255; // alpha
+      }
+      leanweb.eventBus.dispatchEvent('image', { bytes, width: this.canvas.width, height: this.canvas.height });
+    }
+
+    setBrightness(value = 0) {
+      this.brightness = value;
+      const ctx = this.canvas.getContext('2d');
+      const imageData = ctx.getImageData(0, 0, this.canvas.width, this.canvas.height);
+      const bytes = new Array(imageData.data.length);
+      for (let i = 0; i < imageData.data.length; i += 4) {
+        bytes[i] = imageData.data[i] + value; // red
+        bytes[i + 1] = imageData.data[i + 1] + value; // green
+        bytes[i + 2] = imageData.data[i + 2] + value; // blue
+        bytes[i + 3] = 255; // alpha
+      }
+      leanweb.eventBus.dispatchEvent('image', { bytes, width: this.canvas.width, height: this.canvas.height });
+    }
+
+    setContrast(value = 1) {
+      this.contrast = value;
+      const ctx = this.canvas.getContext('2d');
+      const imageData = ctx.getImageData(0, 0, this.canvas.width, this.canvas.height);
+      const bytes = new Array(imageData.data.length);
+      for (let i = 0; i < imageData.data.length; i += 4) {
+        bytes[i] = imageData.data[i] * value; // red
+        bytes[i + 1] = imageData.data[i + 1] * value; // green
+        bytes[i + 2] = imageData.data[i + 2] * value; // blue
         bytes[i + 3] = 255; // alpha
       }
       leanweb.eventBus.dispatchEvent('image', { bytes, width: this.canvas.width, height: this.canvas.height });

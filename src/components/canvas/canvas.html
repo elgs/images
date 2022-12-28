@@ -7,8 +7,19 @@
   <button lw-on:click="gChannel()">Green</button>
   <button lw-on:click="bChannel()">Blue</button>
   <button lw-on:click="gray()">Gray</button>
+  <button lw-on:click="invert()">Invert</button>
   <button lw-on:click="horizontalEdges()">H Edges</button>
   <button lw-on:click="verticalEdges()">V Edges</button>
+  <div>
+    <input type='range' min="-255" max="255" lw-model='brightness' lw-on:input='setBrightness(brightness)'>
+    <input type="number" min="-255" max="255" lw-model='brightness' lw-on:input='setBrightness(brightness)'>
+    <button lw-on:click="setBrightness()">Reset Brightness</button>
+  </div>
+  <div>
+    <input type="range" min="0" max="10" step=".1" lw-model=' contrast' lw-on:input='setContrast(contrast)'>
+    <input type="number" min="0" max="10" step=".1" lw-model='contrast' lw-on:input='setContrast(contrast)'>
+    <button lw-on:click="setContrast()">Reset Contrast</button>
+  </div>
 </div>
 <canvas id="original" lw-on:mousedown="startDrawing($event)" lw-on:mousemove="draw($event)"
   lw-on:mouseup="endDrawing($event)" lw-on:mouseleave="endDrawing($event)" lw-on:dragover="dragOver($event)"
