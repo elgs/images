@@ -1,0 +1,11 @@
+{
+  "name": "images",
+  "version": "2.0.3",
+  "components": [
+    "root",
+    "canvas"
+  ],
+  "resources": [
+    "resources/"
+  ]
+}

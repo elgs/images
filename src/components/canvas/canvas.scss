@@ -1,0 +1,10 @@
+:host {
+  display: block;
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+canvas#original {
+  border: 1px solid #000;
+}

@@ -1,0 +1,15 @@
+<div lw-if="source">
+  <div>
+    <input type="file" id="file" name="file" accept="image/*" lw-on:change="loadFile($event)">
+  </div>
+  <button lw-on:click="clearCanvas()">Clear</button>
+  <button lw-on:click="rChannel()">Red</button>
+  <button lw-on:click="gChannel()">Green</button>
+  <button lw-on:click="bChannel()">Blue</button>
+  <button lw-on:click="gray()">Gray</button>
+  <button lw-on:click="horizontalEdges()">H Edges</button>
+  <button lw-on:click="verticalEdges()">V Edges</button>
+</div>
+<canvas id="original" lw-on:mousedown="startDrawing($event)" lw-on:mousemove="draw($event)"
+  lw-on:mouseup="endDrawing($event)" lw-on:mouseleave="endDrawing($event)" lw-on:dragover="dragOver($event)"
+  lw-on:drop="drop($event)"></canvas>
