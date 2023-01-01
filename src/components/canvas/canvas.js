@@ -182,6 +182,76 @@ customElements.define('images-canvas',
       leanweb.eventBus.dispatchEvent('image', { bytes, width: this.canvas.width, height: this.canvas.height });
     }
 
+    horizontalFlip() {
+      const ctx = this.canvas.getContext('2d');
+      const imageData = ctx.getImageData(0, 0, this.canvas.width, this.canvas.height);
+      const bytes = new Array(imageData.data.length);
+      for (let i = 0; i < imageData.data.length; i += 4) {
+        const x = (i / 4) % this.canvas.width;
+        const y = Math.floor((i / 4) / this.canvas.width);
+        const newX = this.canvas.width - x - 1;
+        const newI = (newX + y * this.canvas.width) * 4;
+        bytes[newI] = imageData.data[i]; // red
+        bytes[newI + 1] = imageData.data[i + 1]; // green
+        bytes[newI + 2] = imageData.data[i + 2]; // blue
+        bytes[newI + 3] = 255; // alpha
+      }
+      leanweb.eventBus.dispatchEvent('image', { bytes, width: this.canvas.width, height: this.canvas.height });
+    }
+
+    verticalFlip() {
+      const ctx = this.canvas.getContext('2d');
+      const imageData = ctx.getImageData(0, 0, this.canvas.width, this.canvas.height);
+      const bytes = new Array(imageData.data.length);
+      for (let i = 0; i < imageData.data.length; i += 4) {
+        const x = (i / 4) % this.canvas.width;
+        const y = Math.floor((i / 4) / this.canvas.width);
+        const newY = this.canvas.height - y - 1;
+        const newI = (x + newY * this.canvas.width) * 4;
+        bytes[newI] = imageData.data[i]; // red
+        bytes[newI + 1] = imageData.data[i + 1]; // green
+        bytes[newI + 2] = imageData.data[i + 2]; // blue
+        bytes[newI + 3] = 255; // alpha
+      }
+      leanweb.eventBus.dispatchEvent('image', { bytes, width: this.canvas.width, height: this.canvas.height });
+    }
+
+    rotateLeft() {
+      const ctx = this.canvas.getContext('2d');
+      const imageData = ctx.getImageData(0, 0, this.canvas.width, this.canvas.height);
+      const bytes = new Array(imageData.data.length);
+      for (let i = 0; i < imageData.data.length; i += 4) {
+        const x = (i / 4) % this.canvas.width;
+        const y = Math.floor((i / 4) / this.canvas.width);
+        const newX = this.canvas.height - y - 1;
+        const newY = x;
+        const newI = (newX + newY * this.canvas.height) * 4;
+        bytes[newI] = imageData.data[i]; // red
+        bytes[newI + 1] = imageData.data[i + 1]; // green
+        bytes[newI + 2] = imageData.data[i + 2]; // blue
+        bytes[newI + 3] = 255; // alpha
+      }
+      leanweb.eventBus.dispatchEvent('image', { bytes, width: this.canvas.height, height: this.canvas.width });
+    }
+
+    rotateRight() {
+      const ctx = this.canvas.getContext('2d');
+      const imageData = ctx.getImageData(0, 0, this.canvas.width, this.canvas.height);
+      const bytes = new Array(imageData.data.length);
+      for (let i = 0; i < imageData.data.length; i += 4) {
+        const x = (i / 4) % this.canvas.width;
+        const y = Math.floor((i / 4) / this.canvas.width);
+        const newX = y;
+        const newY = this.canvas.width - x - 1;
+        const newI = (newX + newY * this.canvas.height) * 4;
+        bytes[newI] = imageData.data[i]; // red
+        bytes[newI + 1] = imageData.data[i + 1]; // green
+        bytes[newI + 2] = imageData.data[i + 2]; // blue
+        bytes[newI + 3] = 255; // alpha
+      }
+      leanweb.eventBus.dispatchEvent('image', { bytes, width: this.canvas.height, height: this.canvas.width });
+    }
+
     setBrightness(value = 0) {
       this.brightness = value;
       const ctx = this.canvas.getContext('2d');
